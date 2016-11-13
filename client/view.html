@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>vr phone</title>
+<script src="js/api.js"></script>
+<script src="js/stat.js"></script>
+<script>
+function $$(q){	return document.querySelectorAll(q);}
+function $I(q){	return document.getElementById(q);}
+onload = function() {
+	STAT.poll().then(function(){
+		STAT.addEvent("reload",function(d){
+			if(d==1) location.reload() ;
+		})
+		var int = setInterval(function() {
+			STAT.poll().catch(function() {
+				clearInterval(int) ;
+			})
+		}, 100) ;
+	})
+	STAT.addEvent("text",function(d){
+		Array.prototype.forEach.call($$("div.t"),function(i){
+			i.innerHTML = d ;
+		});
+	})
+	STAT.addEvent("depth",function(d){
+		let dw = d * 0.2 ;
+		let bw = 10 - dw ;
+		let dl = $$('#bl div.t')[0].style ;
+		dl.marginLeft = -dw+"vw" ;
+		dl.width = bw + "vw" ;
+		dl.height = bw + "vw" ;
+		let dr = $$('#br div.t')[0].style ;
+		dr.marginLeft = dw+"vw" ;
+		dr.width = bw + "vw" ;
+		dr.height = bw + "vw" ;
+
+	})
+	STAT.addEvent("color",function(d){
+		Array.prototype.forEach.call($$("div.t"),function(i){
+			i.style.backgroundColor = d ;
+		});
+	})
+}
+</script>
+<style>
+html,body {
+	width:100% ;
+	height:100% ;
+	margin:0 ;
+}
+div {
+	box-sizing: border-box ;
+}
+#base {
+	width:100% ;
+	height:100% ;
+	display:flex ;
+}
+#base > div {
+	border:2px solid red ;
+	width:50% ;
+	position:relative ;
+}
+div.s {
+	position:absolute ;
+	width:30vw;
+	height:30vw ;
+	top:calc((100vh - 30vw) / 2) ;
+	left:10vw ;
+	background-color:#888 ;
+}
+div.t {
+	position:absolute ;
+	width:10vw ;
+	height:10vw ;
+	top:10vw ; ;
+	left:10vw ;
+	background-color:#f88 ;	
+}
+#bl div.t {
+	margin-left:0  ;	
+}
+#br div.t {
+	margin-left:0  ;	
+}
+</style>
+<body>
+<div id=base>
+<div id=bl><div class=s><div class=t></div></div></div>
+<div id=br><div class=s><div class=t></div></div></div>
+</div>
+</body>

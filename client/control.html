@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>vr console</title>
+<script src="js/api.js"></script>
+<script>
+function $$(q){	return document.querySelectorAll(q);}
+function $I(q){	return document.getElementById(q);}
+onload = function() {
+	API.get({cmd:"p"}).then(function(d){
+		console.log(d.stat) ;
+		$I("t_text").value=d.stat.text;
+		$I("r_depth").value=d.stat.depth;
+		$I("p_col").value=d.stat.color;
+	})
+	$I("b_reload").addEventListener("click",function() {
+		API.get({cmd:"set",reload:1}).then(function(){ ;
+			setTimeout(function() {
+				API.get({cmd:"set",reload:0}) ;		
+			},400) ;
+		})
+	})
+	$I("t_text").addEventListener("change",function() {
+		API.get({cmd:"set",text:this.value}) ;
+	});
+	$I("r_depth").addEventListener("change",function() {
+		API.get({cmd:"set",depth:this.value}) ;
+	});
+	$I("p_col").addEventListener("change",function() {
+		API.get({cmd:"set",color:this.value}) ;
+	});
+}
+</script>
+<body>
+<div>
+<button id=b_reload>RELOAD</button>
+</div>
+<input type=range id=r_depth min=0 max=30><br/>
+<input type=text id=t_text><br/>
+<input type=color id=p_col>
+</body>
+</html>
