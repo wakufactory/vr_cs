@@ -7,8 +7,8 @@ var STAT = {
 				reject(st) ;
 			}).then(function(d){
 				for(var i in STAT.evnt) {
-					if(STAT.stat[i]!=d.stat[i]) {
-						STAT.evnt[i](d.stat[i]) ;
+					if(STAT.stat[i]==undefined || STAT.stat[i]!=d.stat[i]) {
+						if(STAT.evnt[i]) STAT.evnt[i](d.stat[i]) ;
 					}		
 				}
 				STAT.stat = d.stat ;
