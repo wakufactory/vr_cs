@@ -9,6 +9,7 @@ var API = {
 		return "?"+s.join("&") ;
 	},
 	get:function(p) {
+//		console.log(p) ;
 		return new Promise(function(resolve,reject) {
 			var req = new XMLHttpRequest();
 			req.open("get","/api/"+API._param(p),true) ;

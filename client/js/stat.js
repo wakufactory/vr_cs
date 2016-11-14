@@ -8,7 +8,7 @@ var STAT = {
 			}).then(function(d){
 				for(var i in STAT.evnt) {
 					if(STAT.stat[i]==undefined || STAT.stat[i]!=d.stat[i]) {
-						if(STAT.evnt[i]) STAT.evnt[i](d.stat[i]) ;
+						if(STAT.evnt[i]) STAT.evnt[i].call(d.stat,d.stat[i]) ;
 					}		
 				}
 				STAT.stat = d.stat ;
@@ -17,6 +17,7 @@ var STAT = {
 		}) 		
 	},
 	addEvent:function(ev,cb) {
-		STAT.evnt[ev] = cb ;
+		if(!Array.isArray(ev)) ev = [ev] ;
+		for(let i=0;i<ev.length;i++) STAT.evnt[ev[i]] = cb ;
 	}
 }
